@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased transition-colors duration-300;
+  }
+  
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-2.5 bg-white text-gray-700 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-all duration-300;
+  }
+  
+  .dark .btn-secondary {
+    @apply bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-soft hover:shadow-medium transition-shadow duration-300;
+  }
+  
+  .dark .card {
+    @apply bg-gray-800;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200;
+  }
+  
+  .dark .input-field {
+    @apply border-gray-700 bg-gray-800 text-gray-100 focus:ring-indigo-500;
+  }
+  
+  .responsive-table {
+    @apply overflow-x-auto;
+    
+    .el-table {
+      @apply min-w-full;
+    }
+  }
+  
+  .responsive-tabs {
+    @apply w-full;
+    
+    .el-tabs__nav-wrap {
+      @apply overflow-x-auto;
+    }
+    
+    .el-tabs__nav {
+      @apply whitespace-nowrap;
+    }
+  }
+}
