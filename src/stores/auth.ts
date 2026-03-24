@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', () => {
   const loading = ref(false);
 
   const isAuthenticated = computed(() => !!token.value);
-  const isAdmin = computed(() => userInfo.value?.role === 'admin');
+  const isAdmin = computed(() => userInfo.value?.role === 'ADMIN');
 
   const setToken = (newToken: string) => {
     token.value = newToken;

@@ -35,7 +35,7 @@
                     <img
                       :src="article.author.avatar || defaultAvatar"
                       :alt="article.author.username"
-                      class="h-8 w-8 rounded-full object-cover"
+                      class="h-6 w-6 rounded-full object-cover"
                     >
                     <span>{{ article.author.username }}</span>
                   </div>
@@ -205,7 +205,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { articleApi, commentApi } from '@/api';
 import type { Article, Comment } from '@/api';
@@ -220,6 +220,7 @@ import CommentItem from '@/components/CommentItem.vue';
 import { ElMessage } from 'element-plus';
 
 const route = useRoute();
+const router = useRouter();
 const authStore = useAuthStore();
 
 const articleId = computed(() => Number(route.params.id));
@@ -305,32 +306,36 @@ const loadRelatedArticles = async () => {
 };
 
 const handleLike = async () => {
+  if (!isAuthenticated.value) {
+    router.push('/login');
+    return;
+  }
+  
   try {
-    if (article.value?.isLiked) {
-      await articleApi.unlikeArticle(articleId.value);
-      article.value.likes--;
-      article.value.isLiked = false;
-    } else {
-      await articleApi.likeArticle(articleId.value);
-      article.value!.likes++;
-      article.value!.isLiked = true;
-    }
+    const result = article.value?.isLiked 
+      ? await articleApi.unlikeArticle(articleId.value)
+      : await articleApi.likeArticle(articleId.value);
+    
+    article.value!.likes = result.likes;
+    article.value!.isLiked = result.isLiked;
   } catch (error) {
     ElMessage.error('操作失败');
   }
 };
 
 const handleFavorite = async () => {
+  if (!isAuthenticated.value) {
+    router.push('/login');
+    return;
+  }
+  
   try {
-    if (article.value?.isFavorited) {
-      await articleApi.unfavoriteArticle(articleId.value);
-      article.value.favorites--;
-      article.value.isFavorited = false;
-    } else {
-      await articleApi.favoriteArticle(articleId.value);
-      article.value!.favorites++;
-      article.value!.isFavorited = true;
-    }
+    const result = article.value?.isFavorited 
+      ? await articleApi.unfavoriteArticle(articleId.value)
+      : await articleApi.favoriteArticle(articleId.value);
+    
+    article.value!.favorites = result.favorites;
+    article.value!.isFavorited = result.isFavorited;
   } catch (error) {
     ElMessage.error('操作失败');
   }

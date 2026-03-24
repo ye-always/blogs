@@ -65,7 +65,7 @@ export interface User {
   email: string;
   avatar?: string;
   bio?: string;
-  role: 'admin' | 'user';
+  role: 'ADMIN' | 'USER';
   createdAt: string;
 }
 
@@ -123,6 +123,14 @@ export const articleApi = {
 
   unfavoriteArticle: (id: number) => {
     return httpClient.delete<any>(`/articles/${id}/favorite`);
+  },
+
+  getUserLikedArticles: (params: { page?: number; pageSize?: number }) => {
+    return httpClient.get<any>('/articles/user/liked', { params });
+  },
+
+  getUserFavoritedArticles: (params: { page?: number; pageSize?: number }) => {
+    return httpClient.get<any>('/articles/user/favorited', { params });
   },
 };
 
@@ -228,6 +236,10 @@ export const authApi = {
   changePassword: (data: { oldPassword: string; newPassword: string }) => {
     return httpClient.put('/auth/password', data);
   },
+
+  forgotPassword: (email: string) => {
+    return httpClient.post('/auth/forgot-password', { email });
+  },
 };
 
 export const adminApi = {
@@ -249,6 +261,18 @@ export const adminApi = {
 
   batchRejectComments: (commentIds: number[]) => {
     return httpClient.put('/admin/comments/batch-reject', { commentIds });
+  },
+
+  getUsers: (params: PaginationParams & { keyword?: string }) => {
+    return httpClient.get<any>('/admin/users', { params });
+  },
+
+  updateUserRole: (userId: number, data: { role: string }) => {
+    return httpClient.put<any>(`/admin/users/${userId}/role`, data);
+  },
+
+  deleteUser: (userId: number) => {
+    return httpClient.delete(`/admin/users/${userId}`);
   },
 };
 

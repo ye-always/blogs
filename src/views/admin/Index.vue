@@ -146,7 +146,7 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { ElMessage } from 'element-plus';
-import { User, SwitchButton, DataLine, Document, ChatDotRound, Setting, Picture } from '@element-plus/icons-vue';
+import { User, SwitchButton, DataLine, Document, ChatDotRound, Setting, Picture, UserFilled } from '@element-plus/icons-vue';
 import { adminConfig } from '@/config/admin';
 
 const route = useRoute();
@@ -164,6 +164,7 @@ const menuItems = [
   { name: '文章管理', path: '/admin/articles', icon: Document },
   { name: '评论审核', path: '/admin/comments', icon: ChatDotRound },
   { name: '轮播图管理', path: '/admin/banners', icon: Picture },
+  { name: '用户管理', path: '/admin/users', icon: UserFilled },
   { name: '系统设置', path: '/admin/settings', icon: Setting },
 ];
 

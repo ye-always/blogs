@@ -89,14 +89,37 @@
                       v-for="article in favorites"
                       :key="article.id"
                       :to="`/article/${article.id}`"
-                      class="block p-4 border border-gray-200 rounded-lg hover:border-indigo-300 hover:shadow-md transition-all"
+                      class="block p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all"
                     >
-                      <h3 class="font-medium text-gray-900 mb-1">{{ article.title }}</h3>
-                      <p class="text-sm text-gray-500">{{ formatDate(article.createdAt) }}</p>
+                      <h3 class="font-medium text-gray-900 dark:text-gray-100 mb-1">{{ article.title }}</h3>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">{{ formatDate(article.createdAt) }}</p>
                     </router-link>
                   </div>
-                  <div v-else class="text-center py-8 text-gray-500">
+                  <div v-else class="text-center py-8 text-gray-500 dark:text-gray-400">
                     暂无收藏文章
+                  </div>
+                </el-tab-pane>
+
+                <el-tab-pane label="我的点赞" name="likes">
+                  <div v-if="likesLoading" class="space-y-4">
+                    <div v-for="i in 3" :key="i" class="animate-pulse">
+                      <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                      <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                  <div v-else-if="likes.length > 0" class="space-y-4">
+                    <router-link
+                      v-for="article in likes"
+                      :key="article.id"
+                      :to="`/article/${article.id}`"
+                      class="block p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all"
+                    >
+                      <h3 class="font-medium text-gray-900 dark:text-gray-100 mb-1">{{ article.title }}</h3>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">{{ formatDate(article.createdAt) }}</p>
+                    </router-link>
+                  </div>
+                  <div v-else class="text-center py-8 text-gray-500 dark:text-gray-400">
+                    暂无点赞文章
                   </div>
                 </el-tab-pane>
               </el-tabs>
@@ -173,13 +196,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { ElMessage, type FormInstance, type FormRules, type UploadProps } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue';
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
+import { articleApi } from '@/api';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -190,6 +214,7 @@ const passwordFormRef = ref<FormInstance>();
 const profileLoading = ref(false);
 const passwordLoading = ref(false);
 const favoritesLoading = ref(false);
+const likesLoading = ref(false);
 const showAvatarUpload = ref(false);
 const avatarUrl = ref('');
 
@@ -219,6 +244,7 @@ const passwordForm = reactive({
 });
 
 const favorites = ref<any[]>([]);
+const likes = ref<any[]>([]);
 
 const profileRules: FormRules = {
   introduction: [
@@ -354,6 +380,42 @@ const handleSaveAvatar = async () => {
     ElMessage.error('头像更新失败');
   }
 };
+
+const loadFavorites = async () => {
+  try {
+    favoritesLoading.value = true;
+    const response = await articleApi.getUserFavoritedArticles({ page: 1, pageSize: 100 });
+    console.log('收藏响应:', response);
+    favorites.value = response.list || response.data?.list || [];
+  } catch (error: any) {
+    console.error('加载收藏失败:', error);
+    ElMessage.error(error.message || '加载收藏失败');
+  } finally {
+    favoritesLoading.value = false;
+  }
+};
+
+const loadLikes = async () => {
+  try {
+    likesLoading.value = true;
+    const response = await articleApi.getUserLikedArticles({ page: 1, pageSize: 100 });
+    console.log('点赞响应:', response);
+    likes.value = response.list || response.data?.list || [];
+  } catch (error: any) {
+    console.error('加载点赞失败:', error);
+    ElMessage.error(error.message || '加载点赞失败');
+  } finally {
+    likesLoading.value = false;
+  }
+};
+
+watch(activeTab, (newTab) => {
+  if (newTab === 'favorites' && favorites.value.length === 0) {
+    loadFavorites();
+  } else if (newTab === 'likes' && likes.value.length === 0) {
+    loadLikes();
+  }
+});
 
 onMounted(() => {
   initProfileForm();

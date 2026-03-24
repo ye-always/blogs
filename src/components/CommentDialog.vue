@@ -31,9 +31,11 @@
 
 <script setup lang="ts">
 import { ref, reactive, watch, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus';
 import { commentApi } from '@/api';
 import { eventBus, EventTypes } from '@/utils/eventBus';
+import { useAuthStore } from '@/stores/auth';
 
 interface Props {
   modelValue: boolean;
@@ -52,6 +54,8 @@ const emit = defineEmits<{
   (e: 'success'): void;
 }>();
 
+const authStore = useAuthStore();
+const router = useRouter();
 const visible = ref(false);
 const loading = ref(false);
 const formRef = ref<FormInstance>();
@@ -89,6 +93,11 @@ const handleClose = () => {
 };
 
 const handleSubmit = async () => {
+  if (!authStore.isAuthenticated) {
+    router.push('/login');
+    return;
+  }
+  
   if (!formRef.value) return;
 
   try {

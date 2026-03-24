@@ -41,9 +41,9 @@
                 如果你有任何问题或建议，欢迎通过以下方式联系我：
               </p>
               <div class="space-y-2 text-gray-700 dark:text-gray-300">
-                <p>邮箱: example@email.com</p>
-                <p>GitHub: github.com/yourusername</p>
-                <p>Twitter: @yourusername</p>
+                <p>邮箱: 2674199819@qq.com</p>
+                <p>GitHub: github.com/2674199819</p>
+                <p>Twitter: @2674199819</p>
               </div>
               
               <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">版权声明</h2>

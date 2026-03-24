@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { eventBus, EventTypes } from '@/utils/eventBus';
+import { useAuthStore } from '@/stores/auth';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -57,6 +58,18 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '登录', guest: true },
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/Register.vue'),
+    meta: { title: '注册', guest: true },
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import('@/views/ForgotPassword.vue'),
+    meta: { title: '忘记密码', guest: true },
+  },
+  {
     path: '/profile',
     name: 'Profile',
     component: () => import('@/views/Profile.vue'),
@@ -99,6 +112,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/admin/Banners.vue'),
         meta: { title: '轮播图管理', requiresAuth: true, requiresAdmin: true },
       },
+      {
+        path: 'users',
+        name: 'AdminUsers',
+        component: () => import('@/views/admin/Users.vue'),
+        meta: { title: '用户管理', requiresAuth: true, requiresAdmin: true },
+      },
     ],
   },
   {
@@ -122,11 +141,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
-  const userInfo = localStorage.getItem('userInfo');
-  const user = userInfo ? JSON.parse(userInfo) : null;
+  const authStore = useAuthStore();
 
-  if (to.meta.requiresAuth && !token) {
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     eventBus.emit(EventTypes.NOTIFICATION_SHOW, { 
       type: 'warning', 
       message: '请先登录' 
@@ -135,7 +152,7 @@ router.beforeEach((to, from, next) => {
     return;
   }
 
-  if (to.meta.requiresAdmin && (!user || user.role !== 'admin')) {
+  if (to.meta.requiresAdmin && !authStore.isAdmin) {
     eventBus.emit(EventTypes.NOTIFICATION_SHOW, { 
       type: 'error', 
       message: '需要管理员权限' 
@@ -144,7 +161,7 @@ router.beforeEach((to, from, next) => {
     return;
   }
 
-  if (to.meta.guest && token) {
+  if (to.meta.guest && authStore.isAuthenticated) {
     next('/');
     return;
   }

@@ -3,7 +3,7 @@
     <img
       :src="comment.author.avatar || defaultAvatar"
       :alt="comment.author.username"
-      class="h-10 w-10 rounded-full object-cover flex-shrink-0"
+      class="h-6 w-6 rounded-full object-cover flex-shrink-0"
     >
     <div class="flex-1">
       <div class="flex items-center space-x-2 mb-2">
@@ -55,6 +55,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { commentApi } from '@/api';
 import type { Comment } from '@/api';
@@ -72,6 +73,7 @@ const emit = defineEmits<{
 }>();
 
 const authStore = useAuthStore();
+const router = useRouter();
 
 const canDelete = computed(() => {
   return authStore.isAdmin;
@@ -84,24 +86,18 @@ const formatDate = (date: string) => {
 };
 
 const handleLike = async () => {
+  if (!authStore.isAuthenticated) {
+    router.push('/login');
+    return;
+  }
+  
   try {
-    if (props.comment.isLiked) {
-      const result = await commentApi.unlikeComment(props.comment.id);
-      if (result.success === false) {
-        ElMessage.error(result.message || '操作失败');
-        return;
-      }
-      props.comment.likes = result.likes;
-      props.comment.isLiked = false;
-    } else {
-      const result = await commentApi.likeComment(props.comment.id);
-      if (result.success === false) {
-        ElMessage.error(result.message || '操作失败');
-        return;
-      }
-      props.comment.likes = result.likes;
-      props.comment.isLiked = true;
-    }
+    const result = props.comment.isLiked 
+      ? await commentApi.unlikeComment(props.comment.id)
+      : await commentApi.likeComment(props.comment.id);
+    
+    props.comment.likes = result.likes;
+    props.comment.isLiked = result.isLiked;
   } catch (error: any) {
     console.error('点赞失败:', error);
     ElMessage.error('操作失败');

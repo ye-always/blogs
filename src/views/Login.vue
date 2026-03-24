@@ -48,7 +48,7 @@
           <el-form-item>
             <div class="flex items-center justify-between w-full">
               <el-checkbox v-model="loginForm.remember">记住我</el-checkbox>
-              <el-link type="primary" :underline="false">忘记密码?</el-link>
+              <router-link to="/forgot-password" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">忘记密码?</router-link>
             </div>
           </el-form-item>
 
