@@ -23,7 +23,7 @@ export default defineConfig({
     // 生成静态资源的目录名
     assetsDir: 'assets',
     // 设置最终包的输出目录
-    outDir: 'yjwblogs.top_8002',
+    outDir: 'yjwblogs.top',
     // 是否生成 source map 文件
     sourcemap: false,
     // 分割代码

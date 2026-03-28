@@ -153,10 +153,6 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.meta.requiresAdmin && !authStore.isAdmin) {
-    eventBus.emit(EventTypes.NOTIFICATION_SHOW, { 
-      type: 'error', 
-      message: '需要管理员权限' 
-    });
     next('/');
     return;
   }

@@ -45,7 +45,12 @@
         </div>
       </div>
       <div class="border-t border-gray-200 dark:border-gray-700 mt-4 pt-6 text-center text-gray-600 dark:text-gray-400 text-sm">
-        <p>&copy; {{ new Date().getFullYear() }} Blog. All rights reserved.</p>
+        <p>&copy; {{ new Date().getFullYear() }} Yejiawen Blog. All rights reserved.</p>
+        <p class="mt-2">
+          <a href="http://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+            粤ICP备2026032337号-1
+          </a>
+        </p>
       </div>
     </div>
   </footer>

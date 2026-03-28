@@ -363,7 +363,9 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (response) => {
   console.log('头像上传成功响应:', response);
   if (response.code === 200) {
     const imageUrl = response.data.url;
-    const fullUrl = imageUrl.startsWith('http') ? imageUrl : `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'}${imageUrl}`;
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+    const apiBaseUrl = baseUrl.replace(/\/api$/, '');
+    const fullUrl = imageUrl.startsWith('http') ? imageUrl : `${apiBaseUrl}${imageUrl}`;
     avatarUrl.value = fullUrl;
     ElMessage.success('上传成功');
   } else {

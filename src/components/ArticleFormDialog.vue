@@ -322,7 +322,9 @@ const handleEditorUploadImg = async (files: File[], callback: (urls: string[]) =
       
       if (response.url) {
         const imageUrl = response.url;
-        const fullUrl = imageUrl.startsWith('http') ? imageUrl : `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'}${imageUrl}`;
+        const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+        const apiBaseUrl = baseUrl.replace(/\/api$/, '');
+        const fullUrl = imageUrl.startsWith('http') ? imageUrl : `${apiBaseUrl}${imageUrl}`;
         console.log('文件上传成功:', fullUrl);
         return fullUrl;
       } else {

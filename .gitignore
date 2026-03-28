@@ -3,7 +3,7 @@ node_modules
 dist
 dist-ssr
 blogs-dist
-yjwblogs.top_8002
+yjwblogs.top
 *.local
 .env.local
 .env.*.local

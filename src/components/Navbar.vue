@@ -311,7 +311,6 @@ const handleSearchBlur = () => {
 const toggleTheme = () => {
   const newTheme = themeStore.theme === 'light' ? 'dark' : 'light';
   themeStore.setTheme(newTheme);
-  ElMessage.success(`已切换到${newTheme === 'dark' ? '深色' : '浅色'}主题`);
 };
 
 const goToProfile = () => {

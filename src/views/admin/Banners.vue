@@ -273,7 +273,9 @@ const handleImageSuccess: UploadProps['onSuccess'] = (response) => {
   console.log('轮播图上传成功响应:', response);
   if (response.code === 200) {
     const imageUrl = response.data.url;
-    const fullUrl = imageUrl.startsWith('http') ? imageUrl : `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'}${imageUrl}`;
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+    const apiBaseUrl = baseUrl.replace(/\/api$/, '');
+    const fullUrl = imageUrl.startsWith('http') ? imageUrl : `${apiBaseUrl}${imageUrl}`;
     form.image = fullUrl;
     ElMessage.success('图片上传成功');
   } else {
