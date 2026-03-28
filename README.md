@@ -1,5 +1,7 @@
 # 个人博客系统前端
-
+插入预览图片
+![博客预览](https://8.135.55.137:8888/down/lIL4HTjoDPy7.png)
+[博客浏览地址](http://yjwblogs.top/)
 一个功能完善的现代化博客前端项目，基于 Vue 3 + TypeScript + Element Plus + Tailwind CSS 构建，支持文章发布、评论互动、用户认证等功能。
 
 ## 项目概述
@@ -390,6 +392,7 @@ server {
 
 ## 相关链接
 
+- [博客](http://yjwblogs.top/)
 - [Vue 3 文档](https://vuejs.org/)
 - [Element Plus 文档](https://element-plus.org/)
 - [Tailwind CSS 文档](https://tailwindcss.com/)
