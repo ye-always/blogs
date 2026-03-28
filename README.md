@@ -1,4 +1,4 @@
-# [个人博客系统前端](http://yjwblogs.top/)
+# [yejiawen博客系统前端](http://yjwblogs.top/)
 
 ![博客预览](http://yjwblogs.top/博客首页图.png)
 一个功能完善的现代化博客前端项目，基于 Vue 3 + TypeScript + Element Plus + Tailwind CSS 构建，支持文章发布、评论互动、用户认证等功能。
